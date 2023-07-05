@@ -13,16 +13,13 @@ void Monedas(double vuelto)
     vector<int> res;
     for (auto i : monedas)
     {
-        cout << "Moneda: " << i << endl;
         temp = floor(vuelto / i);
-        cout << temp << endl;
         if (temp >= 1)
         {
             res.push_back(temp);
             vuelto -= temp * i;
             if (vuelto == 0)
                 break;
-            cout << "Vuelto: " << vuelto << endl;
         }
     }
 
@@ -69,7 +66,6 @@ void Mochila(vector<float> peso, vector<float> benef, int M)
             beneficio_total += benef[i] * fr;
             peso_total += (M - peso_total) * peso[i];
         }
-        cout << "Peso momentaneo en I: " << peso_total << endl;
         i++;
     }
 
