@@ -1,10 +1,8 @@
-#include<iostream>
-#include<vector>
+#include <iostream>
+#include <vector>
 #include <list>
 
-
 using namespace std;
-
 
 /////////////////////////
 // ABSTRACT DATA TYPES //
@@ -27,7 +25,6 @@ class CVector{
         CVector(int);
         void Insert(T element);
 
-
 };
 
 template<class T>
@@ -40,10 +37,7 @@ void CVector::Insert(T element){
     if(m_nCount == m_nMax)//verifica si ya se sobrepaso
         Resize();
     m_pVect[m_nCount++] = elem;//inserta al final
-}
-
-*/
-
+}*/
 
 ////////////////////
 // DESIGN PATERNS //
@@ -72,38 +66,47 @@ int main(int argc, char* argv[]){
 }
 */
 
+// 3.6
+////////////////////
+// LISTAS Y ARBOLES //
+////////////////////
 
-/* 3.6
-
-class CMyComplexDataStructure{
+/*class CMyComplexDataStructure
+{
     vector<float> m_container;
-    public:
-        void Insert(float fVal){
-            m_container.push_back(fVal);
-        }
-        template <typename objclass>
-        void sumone(objclass funobj){
-            vector<float>::iterator iter = m_container.begin();
-            for(;iter!= m_container.end() ; iter++)
-                funobj(*iter);
-        }
-        template <typename objclass>
-        void print(objclass funobj){
-            vector<float>::iterator iter = m_container.begin();
-            for(;iter!= m_container.end() ; iter++)
-                cout<<*iter<<endl;
-        }
-};
 
+public:
+    void Insert(float fVal)
+    {
+        m_container.push_back(fVal);
+    }
+    template <typename objclass>
+    void sumone(objclass funobj)
+    {
+        vector<float>::iterator iter = m_container.begin();
+        for (; iter != m_container.end(); iter++)
+            funobj(*iter);
+    }
+    template <typename objclass>
+    void print(objclass funobj)
+    {
+        vector<float>::iterator iter = m_container.begin();
+        for (; iter != m_container.end(); iter++)
+            cout << *iter << endl;
+    }
+};
 
 template <typename objclass>
-class funcobjclass{
-    public:
-        void operator ()(objclass& objinstance){
-            objinstance++;
-        }
+class funcobjclass
+{
+public:
+    void operator()(objclass &objinstance)
+    {
+        objinstance++;
+    }
 };
-int main(int argc, char* argv[]){
+int main()
+{
 
     CMyComplexDataStructure ds;
     ds.Insert(3.5);
@@ -114,124 +117,239 @@ int main(int argc, char* argv[]){
     ds.sumone(x);
     ds.print(x);
     return 0;
-}
-*/
+}*/
 
-/* LinkedLIst & ABB
-template <typename T>
+/// LinkedLIst & ABB
+
+/*template <typename T>
 class CLinkedList
 {
-    private:
-        struct NODE{
-            T m_data;
-            struct NODE * m_pNext;
-            NODE(T data){
-                m_data = data;
-            }
-        };
-        NODE<T> *head;
+private:
+    struct NODE
+    {
+        T m_data;
+        NODE *m_pNext;
+        NODE(T data) : m_data(data), m_pNext(nullptr) {} // Constructor inicializado
+    };
 
-    NODE* m_pRoot;
-    public:
-        CLinkedList(){
-            head->m_data=0;
-        };
-        void push_back(T d){
-            if(!head)
-                head->m_data=d;
-            else{
-                NODE<T> *aux=head;
-                while(aux){
-                    if(!aux->m_pNext){
-                        NODE<T>* n = new NODE(d);
-                        aux->m_pNext=n;
-                        return;
-                    }
-                    aux=aux->m_pNext;
-                }
-            }
+    NODE *head;
+
+public:
+    CLinkedList() : head(nullptr) {} // Inicializar head a nullptr en el constructor
+
+    void push_back(T d)
+    {
+        if (!head)
+        {
+            head = new NODE(d);
         }
+        else
+        {
+            NODE *aux = head;
+            while (aux->m_pNext)
+            {
+                aux = aux->m_pNext;
+            }
+            aux->m_pNext = new NODE(d);
+        }
+    }
 
+    void Print()
+    {
+        NODE *aux = head; // Utilizar head en lugar de m_pRoot
+        while (aux)
+        {
+            cout << aux->m_data << " -> ";
+            aux = aux->m_pNext;
+        }
+        cout << "nullptr" << endl; // Agregar nullptr al final de la lista
+    }
 };
+
+int main()
+{
+    CLinkedList<int> lista;
+    lista.push_back(15);
+    lista.push_back(8);
+    lista.push_back(19);
+    lista.push_back(22);
+    lista.push_back(36);
+    lista.push_back(18);
+    lista.Print();
+    return 0;
+}*/
+
+/*
+#include <iostream>
+using namespace std;
 
 template <typename T>
-class CBinaryTree{
-    private:
-        struct NODE
-        {
+class CBinaryTree
+{
+private:
+    struct NODE
+    {
         T m_data;
-        struct NODE * m_pLeft, m_pRight;
-        NODE(T d){
-            m_data=n;
+        NODE *m_pLeft;
+        NODE *m_pRight;
+
+        NODE(T d) : m_data(d), m_pLeft(nullptr), m_pRight(nullptr) {}
+    };
+
+    NODE *m_pRoot;
+
+public:
+    CBinaryTree() : m_pRoot(nullptr) {}
+
+    void add(T d)
+    {
+        if (!m_pRoot)
+        {
+            m_pRoot = new NODE(d);
         }
-        };
-        NODE* m_pRoot;
-    public:
-        CBinaryTree(){
-            m_pRoot=0;
-        }
-        void add(T d){
-            if(!m_pRoot){
-                NODE n = new NODE(d);
-                m_pRoot=n;
-            } else {
-                NODE<T> *head=m_pRoot;
-                NODE<T> n= new NODE(d);
-                while(head){
-                    if(d < head->m_data;){
-                        if(!head->m_pLeft){
-                            head->m_pLeft = n;
-                            break
-                        } else { head = head->m_pLeft; }
+        else
+        {
+            NODE *head = m_pRoot;
+            NODE *n = new NODE(d);
+
+            while (head)
+            {
+                if (d < head->m_data)
+                {
+                    if (!head->m_pLeft)
+                    {
+                        head->m_pLeft = n;
+                        break;
                     }
-                    if(d > head->m_data;){
-                        if(!head->m_pRight){
-                            head->m_pRight = n;
-                            break
-                        } else { head = head->m_pRight; }
-                    } else { break; }
+                    else
+                    {
+                        head = head->m_pLeft;
+                    }
+                }
+                else if (d > head->m_data)
+                {
+                    if (!head->m_pRight)
+                    {
+                        head->m_pRight = n;
+                        break;
+                    }
+                    else
+                    {
+                        head = head->m_pRight;
+                    }
+                }
+                else
+                {
+                    break;
                 }
             }
         }
+    }
+
+    void imprimir(NODE *node)
+    {
+        if (node)
+        {
+            imprimir(node->m_pLeft);
+            cout << node->m_data << " ";
+            imprimir(node->m_pRight);
+        }
+    }
+
+    void imprimir()
+    {
+        imprimir(m_pRoot);
+        cout << endl;
+    }
 };
+
+int main()
+{
+    CBinaryTree<int> arbol;
+    arbol.add(8);
+    arbol.add(4);
+    arbol.add(12);
+    arbol.add(2);
+    arbol.add(6);
+    arbol.add(10);
+    arbol.add(14);
+    arbol.imprimir();
+
+    return 0;
+}*/
+
+//////////////////
+/// CALCULADORA //
+//////////////////
+
+/*
+#include <iostream>
+using namespace std;
+
+float Addition(float a, float b) { return a + b; }
+float Subtraction(float a, float b) { return a - b; }
+float Multiplication(float a, float b) { return a * b; }
+float Division(float a, float b) { return a / b; }
+
+typedef float (*lpfnOperation)(float, float);
+
+int main()
+{
+    lpfnOperation vpf[4] = {&Addition, &Subtraction, &Multiplication, &Division};
+
+    float a, b, c;
+    int opt;
+
+    cout << "1er Numero: ";
+    cin >> a;
+    cout << "2do Numero: ";
+    cin >> b;
+
+    cout << "Selecciona la operacion\n(0-Addition, 1-Subtraction, 2-Multiplication, 3-Division): ";
+    cin >> opt;
+
+    c = (*vpf[opt])(a, b);
+
+    cout << "Result: " << c << endl;
+
+    return 0;
+}
 */
 
+////////////////////////
+/// CALCULADORA CLASES//
+///////////////////////
 
-class CVector//sin terminar
+#include <iostream>
+using namespace std;
+
+// Class CArithmetic definition
+class CArithmetic
 {
-    private:
-        void **m_pVect;
-        int m_nCount,
-        m_nMax, //Controla el numero de elementos asignados
-        m_nDelta, //Controla el crecimiento
-        m_nElemSize; //Tamanio del elemento
-        // Pointer to the function to compare
-        int (*m_lpfnCompare)(void *, void*);
-        void Init(int delta){
-            m_nMax=m_nElemSize=m_nCount=0;
-            m_nDelta=delta;
-        }
-        void Resize(); // Resize the vector when occurs an overflow
-    public:
-        CVector( int (lpfnCompare)(void *, void*),int nElemSize, int delta = 10); // Constructor
-        void Insert(void * elem); // Insert a new element
-        void* DupBlock(void *pElem){
-            void *p = new char[m_nElemSize];
-            return memcpy(p, pElem, m_nElemSize);
-        }
+public:
+    static double Addition(double a, double b) { return a + b; }
+    static double Substraction(double a, double b) { return a - b; }
+    static double Multiplication(double a, double b) { return a * b; }
+    static double Division(double a, double b)
+    {
+        if (b == 0.0)
+            throw 0;
+        return a / b;
+    }
 };
 
-CVector::CVector(int (*lpfnCompare)(void *, void*),int nElemSize, int delta){
-    Init(delta);
-    m_lpfnCompare = lpfnCompare;
-    m_nElemSize = nElemSize;
+int main()
+{
+    double x, y, z;
+
+    // Enter the operands
+    cout << "1er Numero: ";
+    cin >> x;
+    cout << "2do Numero: ";
+    cin >> y;
+
+    z = CArithmetic::Division(x, y);
+    cout << "Result: " << z << endl;
+
+    return 0;
 }
-
-void CVector::Insert(void *pElem){
-    if( m_nCount == m_nMax ) // Verify the overflow
-    Resize(); // Resize the vector before inserting elem
-    m_pVect[m_nCount++] = DupBlock(pElem); // Insert the element at the end
-}
-
-
-
